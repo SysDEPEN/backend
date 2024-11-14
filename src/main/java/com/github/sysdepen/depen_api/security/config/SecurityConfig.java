@@ -50,7 +50,9 @@ public class SecurityConfig {
         http
                 .cors() // Habilita CORS com a configuração definida
                 .and()
-                .authorizeHttpRequests().requestMatchers("api/v1/**").permitAll()
+                .authorizeHttpRequests()
+                .requestMatchers("api/v1/logins/**").permitAll()
+                .requestMatchers("api/v1/users/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .csrf(AbstractHttpConfigurer::disable)

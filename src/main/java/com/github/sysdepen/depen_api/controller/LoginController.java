@@ -18,7 +18,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/logins")
-@CrossOrigin("*")
 public class LoginController {
 
     @Autowired

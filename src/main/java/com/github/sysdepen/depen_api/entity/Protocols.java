@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 
 import java.math.BigInteger;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -32,7 +33,7 @@ public class Protocols {
 
     @OneToOne
     @JsonIgnoreProperties
-    private Documents doc;
+    private List<Documents> doc;
 
     @ManyToOne
     @JsonIgnoreProperties

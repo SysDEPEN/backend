@@ -6,6 +6,7 @@ import com.github.sysdepen.depen_api.repository.DocumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,10 +17,19 @@ public class DocumentService {
     private DocumentRepository documentRepository;
 
 
-    public Documents save(Documents documents) {
+    public Documents save(String userName, String documentType, String fileName) {
 
         try{
-            return documentRepository.save(documents);
+            // Define o caminho do arquivo com base no tipo de documento
+            String filePath = "uploads/" + userName + "/" + documentType + "/" + fileName;
+
+            // Cria a entidade e salva no banco
+            Documents userDocument = new Documents();
+            userDocument.set(userName);
+            userDocument.setFilePath(filePath);
+            userDocument.setDocumentType(documentType);
+
+            return documentRepository.save(userDocument);
         }
         catch (Exception e){
             throw new RuntimeException("document not saved");

@@ -3,6 +3,8 @@ package com.github.sysdepen.depen_api.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import jakarta.persistence.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.time.LocalDateTime;
 
 @Data
@@ -20,7 +22,7 @@ public class Documents {
     private Long id;
 
     @Column(length = 256)
-    private String document;
+    private String documentType;
 
     @Column(nullable = false)
     private LocalDateTime created_at;
@@ -32,7 +34,10 @@ public class Documents {
     @JsonIgnoreProperties
     private User user;
 
-    public void setName(String testDocument) {
 
+    @Transient
+    private MultipartFile arquivo;
+
+    public void setName(String testDocument) {
     }
 }

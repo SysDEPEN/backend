@@ -25,7 +25,7 @@ public class Documents {
     private String documentType;
 
     @Column(nullable = false)
-    private String filePath;
+    private String fileNamePath;
 
     @Column(nullable = false)
     private LocalDateTime created_at;

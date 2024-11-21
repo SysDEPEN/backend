@@ -32,7 +32,7 @@ public class DocumentService {
             Documents userDocument = new Documents();
             Optional<User> userCurrent =  this.userService.findById(userId);
             userDocument.setUser(userCurrent.get());
-            userDocument.setFilePath(filePath);
+            userDocument.setFileNamePath(filePath);
             userDocument.setDocumentType(documentType);
 
             return documentRepository.save(userDocument);

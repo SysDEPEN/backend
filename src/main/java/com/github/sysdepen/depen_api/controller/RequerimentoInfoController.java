@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin("*")
 @RequestMapping("api/v1/req_camp")
 public class RequerimentoInfoController {
 

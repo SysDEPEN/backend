@@ -39,21 +39,22 @@ public class DocumentsController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<?> uploadFiles(@RequestParam("userName") String userName,
-                                         @RequestParam("docs") List<Documents> docs) throws IOException {
+    public ResponseEntity<?> uploadFiles(@RequestParam("userId") Long userId,
+                                         @RequestParam("files") List<MultipartFile> files,
+                                         @RequestParam("documentType") String documentType) throws IOException {
         List<Documents> savedDocuments = new ArrayList<>();
 
-        for (MultipartFile file : docs) {
+        for (MultipartFile file : files) {
             // Define o nome e o caminho do arquivo
             String fileName = file.getOriginalFilename();
-            File targetFile = new File("uploads/" + userName + "/" + documentType + "/" + fileName);
+            File targetFile = new File("uploads/" + userId + "/" + documentType + "/" + fileName);
             targetFile.getParentFile().mkdirs(); // Cria o diretório se não existir
 
             // Salva o arquivo no sistema de arquivos
             file.transferTo(targetFile);
 
             // Salva o caminho do arquivo no banco de dados
-            Documents userDocument = documentService.save(userName, documentType, fileName);
+            Documents userDocument = documentService.save(userId, documentType, fileName);
             savedDocuments.add(userDocument);
         }
 

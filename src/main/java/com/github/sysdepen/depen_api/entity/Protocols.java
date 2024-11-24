@@ -33,7 +33,7 @@ public class Protocols {
 
     @OneToOne
     @JsonIgnoreProperties
-    private List<Documents> doc;
+    private Documents doc;
 
     @ManyToOne
     @JsonIgnoreProperties

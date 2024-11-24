@@ -2,10 +2,12 @@ package com.github.sysdepen.depen_api.services;
 
 
 import com.github.sysdepen.depen_api.entity.Documents;
+import com.github.sysdepen.depen_api.entity.User;
 import com.github.sysdepen.depen_api.repository.DocumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.Document;
 import java.io.File;
 import java.util.List;
 import java.util.Optional;
@@ -16,17 +18,21 @@ public class DocumentService {
     @Autowired
     private DocumentRepository documentRepository;
 
+    @Autowired
+    private UserService userService;
 
-    public Documents save(String userName, String documentType, String fileName) {
+
+    public Documents save(Long userId, String documentType, String fileName) {
 
         try{
             // Define o caminho do arquivo com base no tipo de documento
-            String filePath = "uploads/" + userName + "/" + documentType + "/" + fileName;
+            String filePath = "uploads/" + userId + "/" + documentType + "/" + fileName;
 
             // Cria a entidade e salva no banco
             Documents userDocument = new Documents();
-            userDocument.set(userName);
-            userDocument.setFilePath(filePath);
+            Optional<User> userCurrent =  this.userService.findById(userId);
+            userDocument.setUser(userCurrent.get());
+            userDocument.setFileNamePath(filePath);
             userDocument.setDocumentType(documentType);
 
             return documentRepository.save(userDocument);

@@ -22,6 +22,11 @@ public class DocumentService {
     private UserService userService;
 
 
+    public Optional<Documents> findByUserIdAndDocumentType(Long userId, String documentType) {
+        return documentRepository.findByUserIdAndDocumentType(userId, documentType);
+    }
+
+
     public Documents save(Long userId, String documentType, String fileName) {
 
         try{

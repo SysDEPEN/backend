@@ -42,15 +42,33 @@ public class DocumentsController {
     public ResponseEntity<?> uploadFiles(@RequestParam("userId") Long userId,
                                          @RequestParam("files") List<MultipartFile> files,
                                          @RequestParam("documentType") String documentType) throws IOException {
+        // Define o diretório base para o usuário
+        String baseDir = System.getProperty("user.dir") + "/uploads/";
+        File userDir = new File(baseDir + userId);
+
+        // Verifica se a pasta do userId já existe
+        if (!userDir.exists()) {
+            userDir.mkdirs(); // Cria a pasta do userId, se não existir
+        }
+
+        // Define a subpasta para o tipo de documento
+        File documentTypeDir = new File(userDir, documentType);
+
+        // Verifica se a pasta do tipo de documento já existe
+        if (documentTypeDir.exists()) {
+            return ResponseEntity.badRequest().body("O tipo de documento '" + documentType + "' já foi enviado para este usuário.");
+        }
+
+        // Cria a subpasta para o tipo de documento
+        documentTypeDir.mkdirs();
+
         List<Documents> savedDocuments = new ArrayList<>();
 
         for (MultipartFile file : files) {
-            // Define o nome e o caminho do arquivo
             String fileName = file.getOriginalFilename();
-            File targetFile = new File("uploads/" + userId + "/" + documentType + "/" + fileName);
-            targetFile.getParentFile().mkdirs(); // Cria o diretório se não existir
+            File targetFile = new File(documentTypeDir, fileName);
 
-            // Salva o arquivo no sistema de arquivos
+            // Transfere o arquivo para o sistema de arquivos
             file.transferTo(targetFile);
 
             // Salva o caminho do arquivo no banco de dados

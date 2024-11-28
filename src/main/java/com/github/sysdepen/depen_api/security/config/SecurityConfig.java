@@ -53,6 +53,8 @@ public class SecurityConfig {
                 .requestMatchers("api/v1/logins/**").permitAll()
                 .requestMatchers("api/v1/users/**").permitAll()
                 .requestMatchers("api/v1/documents/**").permitAll()
+                .requestMatchers("api/v1/req_camp/**").permitAll()
+                .requestMatchers("api/v1/protocols/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .csrf().disable()

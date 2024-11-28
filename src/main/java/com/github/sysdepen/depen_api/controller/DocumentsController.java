@@ -4,15 +4,22 @@ package com.github.sysdepen.depen_api.controller;
 import com.github.sysdepen.depen_api.entity.Documents;
 import com.github.sysdepen.depen_api.entity.User;
 import com.github.sysdepen.depen_api.services.DocumentService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.print.Doc;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -38,19 +45,72 @@ public class DocumentsController {
         }
     }
 
+    @GetMapping("/documents")
+    public ResponseEntity<Resource> getDocumentByUserAndType(
+            @RequestParam Long userId,
+            @RequestParam String documentType,
+            HttpServletRequest request) {
+        // Busca o documento no banco de dados pelo userId e documentType
+        Documents document = documentService.findByUserIdAndDocumentType(userId, documentType)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Documento não encontrado"));
+
+        // Obtém o caminho completo do arquivo no sistema de arquivos
+        File file = new File(document.getFileNamePath());
+
+        if (!file.exists()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Arquivo não encontrado no servidor");
+        }
+
+        try {
+            // Cria o recurso para o arquivo
+            Resource resource = new UrlResource(file.toURI());
+
+            // Determina o tipo de conteúdo do arquivo
+            String contentType = request.getServletContext().getMimeType(file.getAbsolutePath());
+            if (contentType == null) {
+                contentType = "application/octet-stream"; // Tipo padrão se não identificado
+            }
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(contentType))
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getName() + "\"")
+                    .body(resource);
+        } catch (MalformedURLException e) {
+            throw new RuntimeException("Erro ao carregar o arquivo", e);
+        }
+    }
+
     @PostMapping("/upload")
     public ResponseEntity<?> uploadFiles(@RequestParam("userId") Long userId,
                                          @RequestParam("files") List<MultipartFile> files,
                                          @RequestParam("documentType") String documentType) throws IOException {
+        // Define o diretório base para o usuário
+        String baseDir = System.getProperty("user.dir") + "/uploads/";
+        File userDir = new File(baseDir + userId);
+
+        // Verifica se a pasta do userId já existe
+        if (!userDir.exists()) {
+            userDir.mkdirs(); // Cria a pasta do userId, se não existir
+        }
+
+        // Define a subpasta para o tipo de documento
+        File documentTypeDir = new File(userDir, documentType);
+
+        // Verifica se a pasta do tipo de documento já existe
+        if (documentTypeDir.exists()) {
+            return ResponseEntity.badRequest().body("O tipo de documento '" + documentType + "' já foi enviado para este usuário.");
+        }
+
+        // Cria a subpasta para o tipo de documento
+        documentTypeDir.mkdirs();
+
         List<Documents> savedDocuments = new ArrayList<>();
 
         for (MultipartFile file : files) {
-            // Define o nome e o caminho do arquivo
             String fileName = file.getOriginalFilename();
-            File targetFile = new File("uploads/" + userId + "/" + documentType + "/" + fileName);
-            targetFile.getParentFile().mkdirs(); // Cria o diretório se não existir
+            File targetFile = new File(documentTypeDir, fileName);
 
-            // Salva o arquivo no sistema de arquivos
+            // Transfere o arquivo para o sistema de arquivos
             file.transferTo(targetFile);
 
             // Salva o caminho do arquivo no banco de dados

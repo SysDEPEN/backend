@@ -1,6 +1,7 @@
 package com.github.sysdepen.depen_api.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.github.sysdepen.depen_api.security.auth.Usuario;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
@@ -50,5 +51,5 @@ public class Address {
 
     @OneToOne
     @JsonIgnoreProperties
-    private User user;
+    private Usuario user;
 }

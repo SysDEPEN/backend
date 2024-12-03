@@ -2,13 +2,11 @@ package com.github.sysdepen.depen_api.services;
 
 
 import com.github.sysdepen.depen_api.entity.Documents;
-import com.github.sysdepen.depen_api.entity.User;
 import com.github.sysdepen.depen_api.repository.DocumentRepository;
+import com.github.sysdepen.depen_api.security.auth.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.Document;
-import java.io.File;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,7 +17,7 @@ public class DocumentService {
     private DocumentRepository documentRepository;
 
     @Autowired
-    private UserService userService;
+    private UsuarioService userService;
 
 
     public Optional<Documents> findByUserIdAndDocumentType(Long userId, String documentType) {
@@ -35,8 +33,8 @@ public class DocumentService {
 
             // Cria a entidade e salva no banco
             Documents userDocument = new Documents();
-            Optional<User> userCurrent =  this.userService.findById(userId);
-            userDocument.setUser(userCurrent.get());
+            Usuario userCurrent =  this.userService.findById(userId);
+            userDocument.setUser(userCurrent);
             userDocument.setFileNamePath(filePath);
             userDocument.setDocumentType(documentType);
 

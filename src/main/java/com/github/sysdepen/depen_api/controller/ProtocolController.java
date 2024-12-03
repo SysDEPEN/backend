@@ -10,18 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @Validated
 @RestController
+@CrossOrigin("*")
 @RequestMapping("api/v1/protocols")
 public class ProtocolController {
     @Autowired
@@ -37,7 +31,7 @@ public class ProtocolController {
         return ResponseEntity.status(HttpStatus.OK).body(protocoloService.findById(id));
     }
 
-    @PostMapping
+    @PostMapping("/save")
     public ResponseEntity<Protocols> create(@RequestBody @Valid Protocols protocols) {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(protocoloService.save(protocols));

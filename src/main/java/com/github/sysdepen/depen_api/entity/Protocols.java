@@ -1,6 +1,7 @@
 package com.github.sysdepen.depen_api.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.github.sysdepen.depen_api.security.auth.Usuario;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import jakarta.persistence.*;
@@ -24,8 +25,8 @@ public class Protocols {
     private LocalDateTime updated_at;
 
     @ManyToOne
-    @JsonIgnoreProperties
-    private User user;
+    @JsonIgnoreProperties("protocols")
+    private Usuario user;
 
     @OneToOne
     @JsonIgnoreProperties

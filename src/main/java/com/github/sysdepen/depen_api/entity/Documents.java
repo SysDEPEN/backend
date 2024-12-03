@@ -1,6 +1,7 @@
 package com.github.sysdepen.depen_api.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.github.sysdepen.depen_api.security.auth.Usuario;
 import lombok.Data;
 import jakarta.persistence.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,7 +36,7 @@ public class Documents {
 
     @OneToOne
     @JsonIgnoreProperties
-    private User user;
+    private Usuario user;
 
 
     @Transient

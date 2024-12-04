@@ -40,6 +40,11 @@ public class Protocols {
     @JsonIgnoreProperties
     private Admin admin;
 
+    // STATUS DO PROTOCOLO!!
+    // 1 = PENDENTE
+    // 2 =  ANALISE
+    // 3 = EMITIDO
+    // 4 = RECUSADO
     @NotNull
     @Column (nullable = false)
     private Long status;

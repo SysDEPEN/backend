@@ -56,7 +56,7 @@ public class DocumentsController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Documento não encontrado"));
 
         // Obtém o caminho completo do arquivo no sistema de arquivos
-        File file = new File(document.getFileNamePath());
+        File file = new File(document.getFileRGPath());
 
         if (!file.exists()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Arquivo não encontrado no servidor");

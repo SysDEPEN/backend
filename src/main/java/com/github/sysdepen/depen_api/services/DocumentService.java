@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -35,7 +36,42 @@ public class DocumentService {
             Documents userDocument = new Documents();
             Usuario userCurrent =  this.userService.findById(userId);
             userDocument.setUser(userCurrent);
-            userDocument.setFileNamePath(filePath);
+
+            if(Objects.equals(documentType, "RG")) {
+                userDocument.setFileRGPath(filePath);
+            }else {
+                var path =  userDocument.getFileRGPath();
+                userDocument.setFileRGPath(path);
+            }
+
+            if(Objects.equals(documentType, "CPF")) {
+                userDocument.setFileCPFPath(filePath);
+            }else {
+                var path =  userDocument.getFileCPFPath();
+                userDocument.setFileCPFPath(path);
+            }
+
+            if (Objects.equals(documentType, "grauP")) {
+                userDocument.setFileGrauParentescoPath(filePath);
+            } else {
+                var path =  userDocument.getFileGrauParentescoPath();
+                userDocument.setFileGrauParentescoPath(path);
+            }
+
+            if(Objects.equals(documentType, "endereco")) {
+                userDocument.setFileEnderecoPath(filePath);
+            }else {
+                var path =  userDocument.getFileEnderecoPath();
+                userDocument.setFileEnderecoPath(path);
+            }
+
+            if(Objects.equals(documentType, "foto")) {
+                userDocument.setFileFotoPath(filePath);
+            }else {
+                var path =  userDocument.getFileFotoPath();
+                userDocument.setFileFotoPath(path);
+            }
+
             userDocument.setDocumentType(documentType);
 
             return documentRepository.save(userDocument);

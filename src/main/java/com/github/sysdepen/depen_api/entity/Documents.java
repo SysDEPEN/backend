@@ -25,8 +25,23 @@ public class Documents {
     @Column(length = 256)
     private String documentType;
 
-    @Column(nullable = false)
-    private String fileNamePath;
+
+    private String fileRGPath;
+
+
+    private String fileCPFPath;
+
+
+    private String fileGrauParentescoPath;
+
+
+    private String fileAntCriminaisPath;
+
+
+    private String fileEnderecoPath;
+
+
+    private String fileFotoPath;
 
     @Column(nullable = false)
     private LocalDateTime created_at;

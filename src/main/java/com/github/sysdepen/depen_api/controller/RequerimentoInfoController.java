@@ -1,6 +1,5 @@
 package com.github.sysdepen.depen_api.controller;
 
-
 import com.github.sysdepen.depen_api.entity.RequerimentoInfo;
 import com.github.sysdepen.depen_api.services.RequerimentosInfoService;
 import jakarta.validation.Valid;
@@ -22,47 +21,27 @@ public class RequerimentoInfoController {
 
     @GetMapping
     public ResponseEntity<List<RequerimentoInfo>> findAll() {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(requerimentoInfoService.findAll());
-        } catch(Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(requerimentoInfoService.findAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Optional<RequerimentoInfo>> findById(@PathVariable Long id) {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(requerimentoInfoService.findById(id));
-        } catch(Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(requerimentoInfoService.findById(id));
     }
 
     @PostMapping("/save")
     public ResponseEntity<RequerimentoInfo> create(@RequestBody @Valid RequerimentoInfo requerimentoInfo) {
-        try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(requerimentoInfoService.save(requerimentoInfo));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(requerimentoInfoService.save(requerimentoInfo));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<RequerimentoInfo> update(@PathVariable Long id, @RequestBody RequerimentoInfo requerimentoInfo) {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(requerimentoInfoService.update(id, requerimentoInfo));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+    public ResponseEntity<RequerimentoInfo> update(@PathVariable Long id, @RequestBody @Valid RequerimentoInfo requerimentoInfo) {
+        return ResponseEntity.status(HttpStatus.OK).body(requerimentoInfoService.update(id, requerimentoInfo));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
-        try {
-            requerimentoInfoService.deleteById(id);
-            return ResponseEntity.status(HttpStatus.OK).build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        requerimentoInfoService.deleteById(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

@@ -25,7 +25,7 @@ public class UsuarioService {
 
 		usuario.setPassword(this.bCryptPasswordEncoder.encode(usuario.getPassword()));
 		this.usuarioRepository.save(usuario);
-		return "Usuario cadastrado com sucessodsfadsfsd";
+		return "Usuario cadastrado com sucesso";
 	}
 	
 	public String update (Usuario usuario, long id) {
@@ -52,7 +52,7 @@ public class UsuarioService {
 	
 	public String delete (long id) {
 		this.usuarioRepository.deleteById(id);
-		return "Veículo deletado com sucesso!";
+		return "Usuário deletado com sucesso!";
 	}
 	
 	

@@ -26,8 +26,7 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/v1/usuario")
 @CrossOrigin("*")
 public class UsuarioController {
-	
-	
+
 	@Autowired
 	private UsuarioService usuarioService;
 	
@@ -38,8 +37,6 @@ public class UsuarioController {
 			String mensagem = this.usuarioService.save(usuario);
 			return new ResponseEntity<>(mensagem, HttpStatus.OK);
 		} catch (Exception e) {
-			System.out.println("dsklfjsdl");
-			System.out.println(e.getMessage());
 			return new ResponseEntity<>("Deu erro!"+e.getMessage(), HttpStatus.BAD_REQUEST );
 		}
 	}

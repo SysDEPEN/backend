@@ -1,6 +1,5 @@
 package com.github.sysdepen.depen_api.controller;
 
-
 import com.github.sysdepen.depen_api.entity.Address;
 import com.github.sysdepen.depen_api.services.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,26 +31,18 @@ public class AddressController {
     }
 
     @PostMapping
-    public ResponseEntity<Address> create(@RequestBody Address address) {
-        try{
-            if(address == null) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-            }
-            return ResponseEntity.status(HttpStatus.CREATED).body(addressService.save(address));
-        } catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-
+    public ResponseEntity<Address> create(@Valid @RequestBody Address address) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(addressService.save(address));
     }
 
     @PutMapping
-    public ResponseEntity<Address> update(@RequestBody Address address) {
+    public ResponseEntity<Address> update(@Valid @RequestBody Address address) {
         return ResponseEntity.status(HttpStatus.OK).body(addressService.update(address));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         addressService.deleteById(id);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

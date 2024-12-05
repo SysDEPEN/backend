@@ -3,6 +3,7 @@ package com.github.sysdepen.depen_api.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
@@ -20,7 +21,7 @@ public class Admin {
     private Long id;
 
     @Column(nullable = false, length = 256)
-    @NotBlank
+    @NotBlank(message = "Nome não pode estar em branco.")
     private String name;
 
     @Column(length = 14)
@@ -31,11 +32,12 @@ public class Admin {
     private String document;
 
     @Column(length = 256)
+    @Email(message = "E-mail inválido.")
     @NotBlank
     private String email;
 
     @Column(nullable = false, length = 256)
-    @NotBlank
+    @NotBlank(message = "Senha não pode estar em branco.")
     private String password;
 
     @Column(nullable = false)

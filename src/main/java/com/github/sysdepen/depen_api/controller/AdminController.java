@@ -1,6 +1,5 @@
 package com.github.sysdepen.depen_api.controller;
 
-
 import com.github.sysdepen.depen_api.entity.Admin;
 import com.github.sysdepen.depen_api.services.AdminService;
 import jakarta.validation.Valid;
@@ -18,40 +17,33 @@ import java.util.Optional;
 @CrossOrigin("*")
 @Validated
 public class AdminController {
+
     @Autowired
     private AdminService adminService;
-
 
     @GetMapping
     public ResponseEntity<List<Admin>> findAll() {
         return ResponseEntity.status(HttpStatus.OK).body(adminService.findAll());
     }
 
-    @GetMapping ("/{id}")
-    public ResponseEntity<Optional<Admin>> findByid(@PathVariable Long id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<Optional<Admin>> findById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(adminService.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity<Admin> create(@RequestBody @Valid Admin admin) {
-        try {
-            if(admin == null) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-            }
-            return ResponseEntity.status(HttpStatus.CREATED).body(adminService.save(admin));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+    public ResponseEntity<Admin> create(@Valid @RequestBody Admin admin) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(adminService.save(admin));
     }
 
     @PutMapping
-    public ResponseEntity<Admin> update(@RequestBody Admin admin) {
+    public ResponseEntity<Admin> update(@Valid @RequestBody Admin admin) {
         return ResponseEntity.status(HttpStatus.OK).body(adminService.update(admin));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         adminService.deleteById(id);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

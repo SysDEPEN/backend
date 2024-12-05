@@ -6,7 +6,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.github.sysdepen.depen_api.entity.Protocols;
@@ -28,12 +30,21 @@ public class Usuario implements UserDetails{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@NotBlank(message = "O nome é obrigatório.")
 	private String name;
+
+	@NotBlank(message = "O documento é obrigatório.")
 	private String document;
+
+	@NotBlank(message = "A senha é obrigatória.")
 	private String password;
+
+	@Email(message = "E-mail inválido.")
+	private String email;
+
 	private String role;
 	private LocalDate date_born;
-	private String email;
 	private LocalDateTime created_at;
 	private LocalDateTime updated_at;
 

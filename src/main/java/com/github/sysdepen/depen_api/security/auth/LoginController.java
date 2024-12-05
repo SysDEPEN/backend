@@ -1,5 +1,6 @@
 package com.github.sysdepen.depen_api.security.auth;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,14 +20,16 @@ public class LoginController {
 	private LoginService loginService;
 
 	@PostMapping("/logar")
-	public ResponseEntity<String> logar(@RequestBody Login login) {
+	public ResponseEntity<String> logar(@Valid @RequestBody Login login) {
 		try {
 			String token = loginService.logar(login);
 			return new ResponseEntity<>(token, HttpStatus.OK);
-		}catch (Exception e) {
-			System.out.println(e.getMessage());
-			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		} catch (AuthenticationException e) {
+			return new ResponseEntity<>("Falha na autenticação: " + e.getMessage(), HttpStatus.UNAUTHORIZED);
+		} catch (Exception e) {
+			return new ResponseEntity<>("Erro ao realizar login: " + e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
+
 
 }

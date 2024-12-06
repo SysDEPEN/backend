@@ -51,8 +51,11 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<String> handleAuthenticationException(AuthenticationException ex) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Falha na autenticação: " + ex.getMessage());
+    public ResponseEntity<Map<String, String>> handleAuthenticationException(AuthenticationException ex) {
+        Map<String, String> response = new HashMap<>();
+        response.put("error", "Usuário ou senha incorretos.");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
+
 
 }
